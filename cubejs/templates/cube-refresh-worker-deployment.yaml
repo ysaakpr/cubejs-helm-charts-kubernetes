@@ -32,10 +32,10 @@ spec:
       serviceAccountName: {{ include "chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      volumes:
-        - name: cubeapi-pv
-          persistentVolumeClaim:
-            claimName: cubeapi-pvc
+      # volumes:
+      #   - name: cubeapi-pv
+      #     persistentVolumeClaim:
+      #       claimName: cubeapi-pvc
       containers:
         - name: {{ .Chart.Name }}
           envFrom:
@@ -45,20 +45,20 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.cubeRefreshWorker.image }}"
           imagePullPolicy: {{ .Values.cubeRefreshWorker.pullPolicy }}
-          volumeMounts:
-            - mountPath: /cube/conf
-              name: cubeapi-pv
+          # volumeMounts:
+          #   - mountPath: /cube/conf
+          #     name: cubeapi-pv
           ports:
             - name: http
               containerPort: {{ .Values.cubeRefreshWorker.service.port }}
               protocol: TCP
-          #livenessProbe:
+          # livenessProbe:
           #  httpGet:
-          #    path: /
+          #    path: /livez
           #    port: http
-          #readinessProbe:
+          # readinessProbe:
           #  httpGet:
-          #    path: /
+          #    path: /readyz
           #    port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

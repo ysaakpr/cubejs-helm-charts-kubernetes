@@ -38,10 +38,10 @@ spec:
       serviceAccountName: {{ include "chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      volumes:
-        - name: cubestore-pv
-          persistentVolumeClaim:
-            claimName: cubestore-pvc  
+      # volumes:
+      #   - name: cubestore-pv
+      #     persistentVolumeClaim:
+      #       claimName: cubestore-pvc  
       containers:
         - name: {{ .Chart.Name }}
           env:
@@ -58,9 +58,9 @@ spec:
           #      command: [ "unset ", "CUBESTORE_WORKER_PORT" ]
           command: ["/bin/sh","-c"]
           args: ["unset CUBESTORE_WORKER_PORT; ./cubestored"]
-          volumeMounts:
-            - mountPath: /cube/data
-              name: cubestore-pv
+          # volumeMounts:
+          #   - mountPath: /cube/data
+          #     name: cubestore-pv
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.cubestoreRouter.image }}"
